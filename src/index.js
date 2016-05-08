@@ -3,7 +3,9 @@ import Scraper from './scraping/scraper';
 
 let app = express();
 
-app.get('/', (req, res) => {
+const PORT = process.env.PORT || 8181
+
+app.get('/scraper', (req, res) => {
   let url = 'https://aftonbladet.se/';
   let scraper = new Scraper(url);
   let responseData = {}; 
@@ -12,11 +14,11 @@ app.get('/', (req, res) => {
   .then(tags => {
     responseData.tags = tags;
     scraper.makeThumbnail();
-    res.send(responseData);
+    res.send('marks scraper');
   })
   .catch(err => console.log(err));
 });
 
-app.listen(8181, () => {
-  console.log('listening on port 8181');
+app.listen(PORT, () => {
+  console.log(`listening on port ${PORT}`);
 });
