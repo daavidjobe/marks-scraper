@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node dist/index.js",
-    "prestart": "babel src --out-dir dist",
+    "postinstall": "babel src --out-dir dist",
     "dev": "nodemon --exec babel-node src/index.js"
   },
   "author": "David Jobe",
