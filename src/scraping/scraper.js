@@ -5,7 +5,8 @@ import gm from'gm';
 
 let xray = new Xray();
 
-const tags = ['news', 'sport', 'blog', 'tech', 'politics']
+const tags = ['news', 'sport', 'blog', 'tech',
+'politics', 'comic', 'entertainment', 'art']
 
 
 export default class Scraper {
@@ -18,7 +19,7 @@ export default class Scraper {
     
     _makeId() {
         var text = "";
-        var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        var possible = "abcdef0123456789";
         for( var i=0; i < 5; i++ )
             text += possible.charAt(Math.floor(Math.random() * possible.length));
         return text;
