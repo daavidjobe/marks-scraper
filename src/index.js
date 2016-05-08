@@ -4,10 +4,17 @@ import Scraper from './scraping/scraper';
 let app = express();
 
 app.get('/', (req, res) => {
-  Scraper.fetchHtml('https://facebook.com', (data) => {
-      console.log(data);
-      res.send(data);
+  let url = 'https://aftonbladet.se/';
+  let scraper = new Scraper(url);
+  let responseData = {}; 
+  scraper.fetchText()
+  .then(data => scraper.createTags(data))
+  .then(tags => {
+    responseData.tags = tags;
+    scraper.makeThumbnail();
+    res.send(responseData);
   })
+  .catch(err => console.log(err));
 });
 
 app.listen(8181, () => {
