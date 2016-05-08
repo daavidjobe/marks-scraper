@@ -1,7 +1,7 @@
 {
   "name": "marks-grab",
   "version": "1.0.0",
-  "description": "",
+  "description": "marks scraper app",
   "main": "index.js",
   "scripts": {
     "start": "node dist/index.js",
@@ -19,5 +19,8 @@
     "gm": "^1.22.0",
     "webshot": "^0.18.0",
     "x-ray": "^2.3.0"
+  },
+  "engines": {
+    "node": "5.5.0"
   }
 }
