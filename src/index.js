@@ -6,15 +6,17 @@ let app = express();
 const PORT = process.env.PORT || 8181
 
 app.get('/scraper', (req, res) => {
-  let url = 'https://aftonbladet.se/';
+  let url = req.query.url;
   let scraper = new Scraper(url);
   let responseData = {}; 
   scraper.fetchText()
   .then(data => scraper.createTags(data))
   .then(tags => {
     responseData.tags = tags;
-    scraper.makeThumbnail();
-    res.send('marks scraper');
+    scraper.makeThumbnail().then(base64 => {
+      responseData.base64 = base64;
+      res.json(responseData);
+    });
   })
   .catch(err => console.log(err));
 });
