@@ -10,13 +10,12 @@ app.get('/scraper', (req, res) => {
   let scraper = new Scraper(url);
   let responseData = {}; 
   scraper.fetchText()
-  .then(data => scraper.createTags(data))
-  .then(tags => {
-    responseData.tags = tags;
+  .then(data => {
+    responseData.tags = scraper.createTags(data);
     scraper.makeThumbnail().then(base64 => {
-      responseData.base64 = base64;
+      responseData.thumbnail = base64;
       res.json(responseData);
-    });
+    }).catch(err => console.log(err));
   })
   .catch(err => console.log(err));
 });

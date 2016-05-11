@@ -2,11 +2,17 @@ import Xray from 'x-ray';
 import webshot from 'webshot';
 import fs from 'fs';
 import gm from'gm';
+import 'gm-base64';
 
 let xray = new Xray();
 
 const tags = ['news', 'sport', 'blog', 'tech',
   'politics', 'comic', 'entertainment']
+  
+const thumbnailDimensions = {
+  width: 170,
+  height: 100
+}
 
 export default class Scraper {
 
@@ -57,13 +63,11 @@ export default class Scraper {
     let tn = `images/${this.imageIdentifier}-tn.png`;
     return new Promise((resolve, reject) => {
       this._makeScreenshot().then(() => {
-        gm(image).resize(200, 200).noProfile()
-          .write(tn, (err) => {
+        gm(image).resize(thumbnailDimensions.width, thumbnailDimensions.height).noProfile()
+          .toBase64('bmp', function(err, base64){
             if (err) reject(err);
-              let base64 = fs.readFileSync(tn, 'base64');
-              this._cleanup(image, tn);
-              resolve(base64);
-          });
+            resolve(base64);
+          })
       }).catch(err => console.log(err));
     });
   }
