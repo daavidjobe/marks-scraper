@@ -37,6 +37,23 @@ export default class Scraper {
       });
     });
   }
+  
+  fetchKeywords() {
+      return new Promise((resolve, reject) => {
+        xray(this.url, {
+        metatags: xray('meta', [{
+          name: '@name',
+          description: '@content'
+        }]),
+        meta: 'meta'
+        })((err, data) => {
+          if (err) reject(err);
+          let keywords = data.metatags.filter(d => d.name === 'keywords');
+          console.log(keywords[0].description);
+          resolve(keywords[0].description.split(','));
+        })
+      })
+  }
 
   createTags(text) {
     let data = text.replace(/\s/gi, "");

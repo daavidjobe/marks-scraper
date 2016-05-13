@@ -24,5 +24,14 @@ describe('Scraper', () => {
     expect(tags).to.be.a('array');
     expect(tags).to.have.length.above(3);
   });
+  
+  it('should extract meta tags', (done) => {
+    scraper.fetchKeywords()
+      .then(metas => {
+        expect(metas).to.be.a('string');
+        done();
+        console.log(metas);
+      })
+  })
 
 })

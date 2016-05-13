@@ -14,7 +14,10 @@ app.get('/scraper', (req, res) => {
     responseData.tags = scraper.createTags(data);
     scraper.makeThumbnail().then(base64 => {
       responseData.thumbnail = base64;
-      res.json(responseData);
+      scraper.fetchKeywords().then(keywords => {
+        responseData.keywords = keywords;
+        res.json(responseData);
+      }).catch(err => console.log(err));
     }).catch(err => console.log(err));
   })
   .catch(err => console.log(err));
