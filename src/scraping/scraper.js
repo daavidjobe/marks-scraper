@@ -14,6 +14,9 @@ const thumbnailDimensions = {
   height: 100
 }
 
+// A web scraper capable of extracting keywords.
+//The scraper can also create thumbnails using phantomjs and imagemagick
+
 export default class Scraper {
 
   constructor(url) {
