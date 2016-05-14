@@ -6,21 +6,24 @@ let app = express();
 const PORT = process.env.PORT || 8181
 
 
-app.get('/scraper', (req, res) => {
+app.get('/scraper/thumbnail', (req, res) => {
   let url = req.query.url;
   let scraper = new Scraper(url);
-  let responseData = {}; 
+  let responseData = {};
+  scraper.makeThumbnail().then(base64 => {
+    responseData.thumbnail = base64;
+    res.json(responseData);
+  }).catch(err => res.json(err));
+});
+
+app.get('/scraper/data', (req, res) => {
+  let url = req.query.url;
+  let scraper = new Scraper(url);
+  let responseData = {};
   scraper.fetchKeywords().then(keywords => {
-   responseData.keywords = keywords;
-    scraper.makeThumbnail().then(base64 => {
-      responseData.thumbnail = base64;
-        res.json(responseData);
-      }).catch(err => res.json(err));
-  })
-  .catch(err => {
-    console.log(err);
-    res.json(err);
-  });
+    responseData.data = keywords;
+    res.json(responseData);
+  }).catch(err => res.json(err));
 });
 
 app.listen(PORT, () => {
