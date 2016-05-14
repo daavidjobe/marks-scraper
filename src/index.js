@@ -10,18 +10,17 @@ app.get('/scraper', (req, res) => {
   let url = req.query.url;
   let scraper = new Scraper(url);
   let responseData = {}; 
-  scraper.fetchText()
-  .then(data => {
-    responseData.tags = scraper.createTags(data);
+  scraper.fetchKeywords().then(keywords => {
+   responseData.keywords = keywords;
     scraper.makeThumbnail().then(base64 => {
       responseData.thumbnail = base64;
-      scraper.fetchKeywords().then(keywords => {
-        responseData.keywords = keywords;
         res.json(responseData);
-      }).catch(err => console.log(err));
-    }).catch(err => console.log(err));
+      }).catch(err => res.json(err));
   })
-  .catch(err => console.log(err));
+  .catch(err => {
+    console.log(err);
+    res.json(err);
+  });
 });
 
 app.listen(PORT, () => {

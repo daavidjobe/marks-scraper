@@ -51,9 +51,8 @@ export default class Scraper {
         meta: 'meta'
         })((err, data) => {
           if (err) reject(err);
-          let keywords = data.metatags.filter(d => d.name === 'keywords');
-          console.log(keywords[0].description);
-          resolve(keywords[0].description.split(','));
+          let filtered = data.metatags.filter(d => d.name === 'keywords');
+          filtered.length > 0 ? resolve(filtered[0].description.split(',')) : [];
         })
       })
   }
@@ -86,6 +85,7 @@ export default class Scraper {
         gm(image).resize(thumbnailDimensions.width, thumbnailDimensions.height).noProfile()
           .toBase64('bmp', function(err, base64){
             if (err) reject(err);
+            this._cleanup(imge, tn);
             resolve(base64);
           })
       }).catch(err => console.log(err));
