@@ -68,9 +68,9 @@ export default class Scraper {
     return result;
   }
   
-  _makeScreenshot() {
+  _makeScreenshot(imageName) {
     return new Promise((resolve, reject) => {
-      webshot(this.url, `images/${this.imageIdentifier}.png`, (err) => {
+      webshot(this.url, imageName, (err) => {
         if (err) reject(err);
         resolve();
       })
@@ -78,24 +78,19 @@ export default class Scraper {
   }
 
   makeThumbnail() {
-    let image = `images/${this.imageIdentifier}.png`;
+    let imageName = `images/${this.imageIdentifier}.png`;
     let tn = `images/${this.imageIdentifier}-tn.png`;
     return new Promise((resolve, reject) => {
-      this._makeScreenshot().then(() => {
-        gm(image).resize(thumbnailDimensions.width, thumbnailDimensions.height).noProfile()
+      this._makeScreenshot(imageName).then(() => {
+        gm(imageName).resize(thumbnailDimensions.width, thumbnailDimensions.height).noProfile()
           .toBase64('bmp', function(err, base64){
             if (err) reject(err);
-            this._cleanup(imge, tn);
             resolve(base64);
           })
       }).catch(err => console.log(err));
     });
   }
-  
-  _cleanup(image, thumbnail) {
-    fs.unlink(image);
-    fs.unlink(thumbnail);
-  }
+ 
   
   
 }
